@@ -7,6 +7,7 @@ import {
   UseInterceptors,
   UploadedFile,
   Get,
+  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -20,7 +21,14 @@ export class UsersController {
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    try {
+      return await this.usersService.create(createUserDto);
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw new BadRequestException(error.message);
+      }
+      throw error;
+    }
   }
 
   @Patch(':id')
@@ -58,5 +66,10 @@ export class UsersController {
   @Get(':id')
   async getUser(@Param('id') id: string) {
     return this.usersService.findOne(id);
+  }
+
+  @Get()
+  async getUsers() {
+    return this.usersService.findAll();
   }
 }

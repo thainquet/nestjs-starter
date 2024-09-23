@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     UsersModule,
-    MongooseModule.forRoot('mongodb://localhost:27017/nestjs-demo'),
+    MongooseModule.forRoot(`${process.env.MONGODB_URL}/${process.env.MONGODB_DB}`),
   ],
 })
 export class AppModule {}
