@@ -12,7 +12,7 @@ import { join } from 'path';
     ConfigModule.forRoot({
       isGlobal: true
     }),
-    MongooseModule.forRoot(`${process.env.MONGODB_URL}/${process.env.MONGODB_DB}`),
+    MongooseModule.forRoot(`${process.env.MONGODB_URL}`),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       include: [UsersModule],
